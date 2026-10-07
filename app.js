@@ -154,7 +154,7 @@ function openMap(id){
   $("#dialog-goal").textContent=guide.goal;
   $("#dialog-plan").innerHTML=guide.plan.map(item=>'<li>'+esc(item)+'</li>').join("");
   renderDialogButton();
-  $("#map-dialog").showModal();
+  if(!$("#map-dialog").open)$("#map-dialog").showModal();
   const url=new URL(location.href);url.searchParams.set("map",map.id);history.replaceState(null,"",url.pathname+"?"+url.searchParams.toString());
 }
 function closeMap(){
@@ -171,6 +171,9 @@ function applyLanguage(){
   });
   document.querySelectorAll("[data-i18n-option]").forEach(el=>{
     const value=ui()[el.dataset.i18nOption];if(typeof value==="string")el.textContent=value;
+  });
+  document.querySelectorAll("[data-mode-option]").forEach(el=>{
+    el.textContent=modeLabel(el.dataset.modeOption);
   });
   $("#language-toggle").textContent=lang==="pt"?"EN":"PT-BR";
   localStorage.setItem(LANGUAGE_KEY,lang);
