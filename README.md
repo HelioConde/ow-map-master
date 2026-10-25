@@ -1,5 +1,17 @@
 # OW Map Master
 
+**Biblioteca de mapas de Overwatch para pesquisar cenários, revisar objetivos e organizar seu estudo.**
+
+**Recursos documentados:** busca, filtros por modo, guias de mapa, favoritos de estudo locais e idiomas PT-BR/EN.
+
+[**Fontes e atualização de conteúdo**](DATA_SOURCES.md)
+
+> Overwatch é um jogo em atualização contínua; a presença de um mapa na biblioteca não garante que ele esteja disponível na fila competitiva atual.
+
+![Status](https://img.shields.io/badge/status-em%20evolução-64748b)
+
+---
+
 Guia bilíngue e pesquisável dos principais mapas PvP de Overwatch.
 
 ## Estado atual
