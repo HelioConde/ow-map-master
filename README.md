@@ -1,57 +1,37 @@
-# OW Map Master
+<div align="center">
+  <h1>🗺️ OW Map Master</h1>
+  <p><strong>Biblioteca bilíngue de mapas de Overwatch para estudar objetivos, modos e planos de jogo.</strong></p>
+  <p><img alt="Status" src="https://img.shields.io/badge/status-MVP%20em%20valida%C3%A7%C3%A3o-64748b"> <img alt="Idiomas" src="https://img.shields.io/badge/idiomas-PT--BR%20%2F%20EN-2563eb"></p>
+  <p><a href="DATA_SOURCES.md"><strong>Fontes e atualizações</strong></a> · <a href="#desenvolvimento"><strong>Executar localmente</strong></a></p>
+</div>
 
-**Biblioteca de mapas de Overwatch para pesquisar cenários, revisar objetivos e organizar seu estudo.**
+## Como usar
 
-**Recursos documentados:** busca, filtros por modo, guias de mapa, favoritos de estudo locais e idiomas PT-BR/EN.
+1. Busque um mapa por nome, estilo ou modo de jogo.
+2. Confira objetivos e pontos de atenção.
+3. Abra o guia e acrescente o mapa à sua fila de estudo.
+4. Retorne à lista nos próximos treinos.
 
-[**Fontes e atualização de conteúdo**](DATA_SOURCES.md)
+O MVP documenta **30 mapas** em uma biblioteca inicial com cinco categorias de modos: Controle, Escolta, Híbrido, Avanço e Flashpoint. Os guias servem para estudo e **não afirmam que todos esses mapas estão na rotação competitiva atual**.
 
-> Overwatch é um jogo em atualização contínua; a presença de um mapa na biblioteca não garante que ele esteja disponível na fila competitiva atual.
+| Funcionalidade | Dados |
+| --- | --- |
+| Biblioteca de mapas | Catálogo curado em `maps.js` |
+| Busca e filtros | Nome, modo e características |
+| Guia | Objetivos e proposta de revisão |
+| Fila pessoal | Salva no `localStorage` |
+| Compartilhamento | Links com mapa, filtros e idioma |
+| Testes | QA estático e cenários de navegador |
 
-![Status](https://img.shields.io/badge/status-em%20evolução-64748b)
+## Desenvolvimento
 
----
+```bash
+git clone https://github.com/HelioConde/ow-map-master.git
+cd ow-map-master
+python -m http.server 8000
+```
 
-Guia bilíngue e pesquisável dos principais mapas PvP de Overwatch.
-
-## Estado atual
-
-> **MVP funcional implementado em 07/10/2026.** O produto entra agora em validação publicada; novas features ficam congeladas até QA real.
-
-## O que já funciona
-
-- biblioteca de 30 mapas principais;
-- filtros por modo e estilo;
-- busca por nome/local/estilo;
-- detalhe por mapa;
-- objetivo e plano de revisão por modo;
-- fila pessoal de estudo em localStorage;
-- deep links por mapa/filtros/idioma;
-- PT-BR padrão + EN;
-- mobile;
-- Sobre, Privacidade e Termos;
-- SEO básico, robots e sitemap;
-- live-update;
-- GitHub Pages;
-- Browser E2E desktop/mobile.
-
-## Cobertura inicial
-
-- 7 Controle;
-- 8 Escolta;
-- 8 Híbridos;
-- 4 Avanço;
-- 3 Flashpoint.
-
-A biblioteca inclui Neon Junction e Aatlis e marca New Junk City/Suravasa como reformulados.
-
-## Fontes
-
-Veja `DATA_SOURCES.md`.
-
-O produto deve ser tratado como conteúdo live-service: antes de afirmar que um mapa está em uma fila competitiva específica, confirme fontes atuais.
-
-## QA
+Abra `http://localhost:8000`. Para QA:
 
 ```bash
 npm install
@@ -59,44 +39,10 @@ npm run check
 npm run test:e2e
 ```
 
-O QA valida:
+## Fontes e limites
 
-- total e distribuição dos mapas;
-- IDs únicos;
-- filtros;
-- busca;
-- abertura do guia;
-- fila de estudo;
-- persistência local;
-- deep links;
-- PT-BR/EN;
-- desktop e mobile.
+Overwatch recebe atualizações frequentes. **A biblioteca é um snapshot de conteúdo**, não uma consulta ao vivo da rotação de mapas. Consulte o arquivo [DATA_SOURCES.md](DATA_SOURCES.md) para critérios de manutenção e atualização.
 
-## Gate antes de V2
+**Status:** MVP funcional documentado, com validação publicada e feedback real ainda necessários antes de expandir. A ferramenta não é associada à Blizzard Entertainment.
 
-- [x] MVP navegável;
-- [x] mobile;
-- [x] PT-BR/EN;
-- [x] busca/filtros;
-- [x] fila de estudo;
-- [x] QA/E2E;
-- [x] Pages preparado;
-- [ ] confirmar Actions verdes;
-- [ ] confirmar Pages publicado;
-- [ ] revisar visual desktop/mobile publicado;
-- [ ] validar os 30 mapas e os textos com jogadores reais;
-- [ ] corrigir somente P0/P1 encontrados.
-
-## V2 — somente após validação
-
-- imagens oficiais/licenciadas por mapa;
-- mapa visual/anotações por ponto;
-- rotas por função;
-- favoritos/notas por herói;
-- quizzes de mapa;
-- atualização de pool competitivo por temporada;
-- compartilhamento de coleção/estudo.
-
-## Compliance
-
-Projeto independente e não afiliado ou endossado pela Blizzard Entertainment.
+Criado por [Hélio Conde](https://github.com/HelioConde).
