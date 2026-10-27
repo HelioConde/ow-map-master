@@ -46,3 +46,12 @@ Overwatch recebe atualizações frequentes. **A biblioteca é um snapshot de con
 **Status:** MVP funcional documentado, com validação publicada e feedback real ainda necessários antes de expandir. A ferramenta não é associada à Blizzard Entertainment.
 
 Criado por [Hélio Conde](https://github.com/HelioConde).
+
+
+## GitHub Pages — pré-requisito de publicação
+
+O monitor de 25/10/2026 confirmou testes de qualidade aprovados, mas o deploy foi bloqueado com `Resource not accessible by integration` ao tentar criar o GitHub Pages automaticamente. Essa configuração requer acesso administrativo, não código JavaScript.
+
+Agora o workflow separa as etapas: `check` valida a aplicação estática, `pages-ready` verifica se o Pages já está habilitado e `deploy` publica apenas HTML/CSS/JS/JSON/robots/sitemap após ambos os critérios passarem. **Um QA verde com deploy pulado não significa site online.**
+
+Para finalizar a configuração **uma vez**, abra **Settings → Pages → Build and deployment → Source: GitHub Actions**. Em seguida execute o workflow manualmente ou faça novo push na `main`. Nenhuma conta ou banco de dados é necessário: a fila de estudo permanece somente no `localStorage` do navegador.
