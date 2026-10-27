@@ -1,4 +1,4 @@
-name: Deploy GitHub Pages
+name: Deploy GitHub Pages (validated static build)
 
 on:
   push:
@@ -15,22 +15,70 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate static app and data
+        run: npm run check
+
+  pages-ready:
+    runs-on: ubuntu-latest
+    outputs:
+      configured: ${{ steps.verify.outputs.configured }}
+    steps:
+      - id: verify
+        name: Confirm Pages was enabled by repository admin
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          code="$(curl --silent --show-error --output /tmp/pages.json --write-out '%{http_code}' \
+            --header "Authorization: Bearer ${GH_TOKEN}" \
+            --header 'Accept: application/vnd.github+json' \
+            --header 'X-GitHub-Api-Version: 2022-11-28' \
+            "https://api.github.com/repos/${GH_REPO}/pages")"
+          if [ "$code" = 200 ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+            echo "Pages está configurado; publicação será executada após o QA." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Pages requer configuração::Ative Settings > Pages > Source: GitHub Actions (HTTP ${code})."
+            {
+              echo "## Publicação pendente"
+              echo "GitHub Pages ainda não está acessível para este repositório (API HTTP ${code})."
+              echo "O QA pode passar, mas o site **não será publicado** até ativar Settings → Pages → Source: GitHub Actions."
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
   deploy:
+    needs: [check, pages-ready]
+    if: needs.pages-ready.outputs.configured == 'true'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/configure-pages@v5
-        with:
-          enablement: true
-      - name: Stamp deploy version
+      - name: Package only deployable assets
         run: |
+          mkdir -p dist-pages
           printf '{"sha":"%s","publishedAt":"%s"}\n' "$GITHUB_SHA" "$(date -u +'%Y-%m-%dT%H:%M:%SZ')" > version.json
+          cp index.html sobre.html privacidade.html termos.html style.css \
+             app.js maps.js static-page.js live-update.js version.json \
+             robots.txt sitemap.xml dist-pages/
+          touch dist-pages/.nojekyll
+          test -f dist-pages/index.html
+          test -f dist-pages/app.js
+          test "$(find dist-pages -type f | wc -l)" -eq 13
+          ! find dist-pages -type f | grep -Ei '\.(php|sql|env|zip|map)$'
+      - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
-          path: .
+          path: dist-pages
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
